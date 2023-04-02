@@ -4,12 +4,12 @@ const time = document.querySelector('.time');
 const score = document.querySelector('.score');
 const quoteEl = document.querySelector('.quote');
 const textArea = document.querySelector('#textArea');
-
+let userTime = 60;
 let quote;
 
 async function generateRandomQuote(){
     try {
-        // const response = await fetch(APIEndpoint);
+        const response = await fetch(APIEndpoint);
         if (response.ok){
             const data = await response.json();
             quote = data.content;
@@ -39,13 +39,12 @@ function showQuote(){
         quoteEl.appendChild(span);
     }
 }
+// handle score validation and mark quote as the correct
 function addMarkDownAndScore(check , trueColor , wrongColor, parentEl , i) {
     do {
         if(check){
             scoreGame++;
             scoreForQuote++;
-            console.log("scoreGame" ,scoreGame)
-            console.log("Score for quote" ,scoreForQuote);
             score.textContent = `Score : ${scoreGame}`;
         }
         parentEl.children[i].style.background = trueColor;
@@ -56,7 +55,7 @@ function addMarkDownAndScore(check , trueColor , wrongColor, parentEl , i) {
         check = false;
     } while (check == true);
 }
-
+// handle  user input
 function handleEventInputUser(e){
     let userInput_string = e.target.value;
     let i = userInput_string.length -1;
@@ -111,13 +110,17 @@ function continueGame(){
             playGame()
         })
 }
-
+// restart reset game state
 function restartGame (){
-    // restart timer
+    clearInterval(myInterval);
+    mytimer = addTimer(userTime)
     scoreGame = 0;
+    formatDataAndShowDOM(userTime)
+    score.textContent = "Score : " + scoreGame
+    textArea.addEventListener('input' , verifyLength)
     continueGame();
 }
-
+// handle timer
 function addTimer(timer){
     let mytimer = timer
     const updateTimer = (timer)=> {
@@ -126,19 +129,22 @@ function addTimer(timer){
     return updateTimer;
 }
 
-let mytimer = addTimer(60);
-
-let myInterval = setInterval(()=>{
-    let timer = mytimer()
-    formatDataAndShowDOM(timer) ;
-    // style our timer && score element
-    styleTimerAndScoreElement(timer , score , time)
-    if(timer == 0) {
-        clearInterval(myInterval);
-        textArea.removeEventListener('input', handleEventInputUser)
-    }
-} , 1000);
-
+let mytimer = addTimer(userTime);
+let myInterval;
+let timer;
+function activeTimer(){
+         myInterval = setInterval(()=>{
+         timer = mytimer()
+        formatDataAndShowDOM(timer) ;
+        // style our timer && score element
+        styleTimerAndScoreElement(timer , score , time)
+        if(timer == 0) {
+            clearInterval(myInterval);
+            textArea.removeEventListener('input', handleEventInputUser)
+        }
+    } , 1000);
+}
+// format data time
 function formatDataAndShowDOM(timer){
     if(timer <= 60) {
         time.textContent = "Time : " + timer
@@ -149,10 +155,28 @@ function formatDataAndShowDOM(timer){
         time.textContent = "Time " + minute + ":" + remainingSecond
     }
 }
-
+// add style when timer start
 function styleTimerAndScoreElement(timer, scoreElement , timerEl) {
     let degValue = Math.floor(Math.random()* (timer / 360) * 360);
     scoreElement.style.background = "linear-gradient("+degValue+"deg"+", rgb(248, 137, 15), rgb(105, 63, 144))"
     timerEl.style.background = "linear-gradient("+degValue+"deg"+", rgb(248, 137, 15), rgb(105, 63, 144))"
    
+}
+// handle button esc when user presses for restart game
+document.addEventListener('keydown' , restartHandler)
+
+function restartHandler(e){
+    if (e.key === "Escape" || e.key === "Esc") {
+        textArea.focus()
+        restartGame();
+        e.preventDefault()
+    } 
+}
+
+
+textArea.addEventListener('input' , verifyLength)
+function verifyLength (e){
+    if (textArea === document.activeElement && textArea.value.length == 1){
+    activeTimer();
+}   textArea.removeEventListener('input', verifyLength)
 }

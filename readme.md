@@ -34,5 +34,10 @@
 <ul>
     <b>V1.8</b>
     <li>add keydown event when press esc key for restar the game</li>
+    <li>fixes timer , restar function</li>
+    
+</ul>
+<ul>
+    <b>V1.9</b>
     <li>bug fixed when ctrl A the text or when we delete by mouse score is handle like when we bakcspace</li>
 </ul>
