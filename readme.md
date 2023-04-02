@@ -21,3 +21,13 @@
     <li>clean the code</li>
     <li>verification function user input is done</li>
 </ul>
+
+<ul>
+    <b>V1.6</b>
+    <li>add timer function</li>
+</ul>
+<ul>
+    <b>V1.7</b>
+    <li>add keydown event when press esc key for restar the game</li>
+    <li>bug fixed when ctrl A the text or when we delete by mouse score is handle like when we bakcspace</li>
+</ul>

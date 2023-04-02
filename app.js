@@ -9,7 +9,7 @@ let quote;
 
 async function generateRandomQuote(){
     try {
-        const response = await fetch(APIEndpoint);
+        // const response = await fetch(APIEndpoint);
         if (response.ok){
             const data = await response.json();
             quote = data.content;
@@ -87,16 +87,7 @@ function handleEventInputUser(e){
     previousLength = currentLength;
 
     if(scoreForQuote == quote.length){
-        quoteEl.textContent= "";
-        textArea.value = "";
-        previousLength = 0;
-        scoreForQuote = 0;
-        console.log("Score for quote at the end" ,scoreForQuote);
-        // generate quote string
-            generateRandomQuote().then(()=> {
-                playGame()
-            })
-        
+        continueGame(); 
     }
 }
 
@@ -106,4 +97,53 @@ function playGame(){
     textArea.setAttribute('maxlength' , `${quote.length}`);
     showQuote();
     textArea.addEventListener('input' , handleEventInputUser);
+}
+
+function continueGame(){
+    // if we not restart the game 
+    quoteEl.textContent= "";
+    textArea.value = "";
+    previousLength = 0;
+    scoreForQuote = 0;
+    console.log("Score for quote at the end" ,scoreForQuote);
+    // generate quote string
+        generateRandomQuote().then(()=> {
+            playGame()
+        })
+}
+
+function restartGame (){
+    // restart timer
+    scoreGame = 0;
+    continueGame();
+}
+
+function addTimer(timer){
+    let mytimer = timer
+    const updateTimer = (timer)=> {
+        return mytimer--;
+    }
+    return updateTimer;
+}
+
+let mytimer = addTimer(60);
+
+let myInterval = setInterval(()=>{
+    let timer = mytimer()
+    formatDataAndShowDOM(timer) ;
+    if(timer == 0) {
+        clearInterval(myInterval);
+        textArea.removeEventListener('input', handleEventInputUser)
+    }
+} , 1000);
+
+function formatDataAndShowDOM(timer){
+    if(timer <= 60) {
+        time.textContent = "Time : " + timer
+    } else {
+        let minute = Math.floor(timer / 60);
+        let remainingSecond = Math.floor(timer % 60);
+        remainingSecond > 10 ? rehandleEventInputUsermainingSecond : "0" + remainingSecond;
+        time.textContent = "Time " + minute + ":" + remainingSecond
+    }
 }
