@@ -15,3 +15,9 @@
     <li>check the score correctly</li>
     <li>add function when backspace and handle bug</li>
 </ul>
+<ul>
+    <b>V1.5</b>
+    <li>fixed bug</li>
+    <li>clean the code</li>
+    <li>verification function user input is done</li>
+</ul>
