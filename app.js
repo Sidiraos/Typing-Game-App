@@ -4,7 +4,7 @@ const time = document.querySelector('.time');
 const score = document.querySelector('.score');
 const quoteEl = document.querySelector('.quote');
 const textArea = document.querySelector('#textArea');
-let userTime = 60;
+let userTime = 59
 let quote;
 
 async function generateRandomQuote(){
@@ -62,13 +62,15 @@ function handleEventInputUser(e){
     let currentLength = e.target.value.length;
     if (currentLength < previousLength) {
         console.log("item deleted");
-        if(quoteEl.children[i+1].classList.contains("green")) {
-            scoreGame--;
-            scoreForQuote--;
-            score.textContent = `Score : ${scoreGame}`
+        for (let j = quoteEl.children.length - 1; j >= currentLength; j--) {
+            if (quoteEl.children[j].classList.contains("green")) {
+                scoreGame--;
+                scoreForQuote--;
+                score.textContent = `Score : ${scoreGame}`
+            }
+            quoteEl.children[j].style.background = "none";
+            quoteEl.children[j].className = "";
         }
-        quoteEl.children[i+1].style.background = "none";
-        quoteEl.children[i+1].className = "";
     } else {
         if(userInput_string.length > 0) {
             if(userInput_string.charAt(i) === quote.charAt(i)) {
@@ -141,6 +143,10 @@ function activeTimer(){
         if(timer == 0) {
             clearInterval(myInterval);
             textArea.removeEventListener('input', handleEventInputUser)
+            document.querySelector('.timeout').classList.add('visible')
+            setTimeout(()=>{
+                document.querySelector('.timeout').classList.remove('visible')
+            } , 3000)
         }
     } , 1000);
 }
@@ -158,9 +164,8 @@ function formatDataAndShowDOM(timer){
 // add style when timer start
 function styleTimerAndScoreElement(timer, scoreElement , timerEl) {
     let degValue = Math.floor(Math.random()* (timer / 360) * 360);
-    scoreElement.style.background = "linear-gradient("+degValue+"deg"+", rgb(248, 137, 15), rgb(105, 63, 144))"
+    scoreElement.style.background = "linear-gradient("+degValue+"deg"+", rgb(166, 3, 105), rgb(232, 180, 0))"
     timerEl.style.background = "linear-gradient("+degValue+"deg"+", rgb(248, 137, 15), rgb(105, 63, 144))"
-   
 }
 // handle button esc when user presses for restart game
 document.addEventListener('keydown' , restartHandler)

@@ -40,4 +40,5 @@
 <ul>
     <b>V1.9</b>
     <li>bug fixed when ctrl A the text or when we delete by mouse score is handle like when we bakcspace</li>
+    <li>Add animation when time out</li>
 </ul>

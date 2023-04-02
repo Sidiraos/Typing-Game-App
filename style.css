@@ -18,6 +18,7 @@ body {
 
 .container {
   padding: 30px;
+  border-radius: 20px;
 }
 .quoteGenerating {
   margin-top: 40px;
@@ -38,4 +39,52 @@ textarea {
   font-size: 20px;
   border-radius: 10px;
   font-weight: 600;
+}
+.score {
+  margin-left: 14px;
+}
+.timeout {
+  display: block;
+  opacity: 0;
+  text-align: center;
+}
+.timeout.visible {
+  animation: slideDown 3000ms ease-in-out ;
+  display: block;
+  transform: translateY(0%)
+}
+@keyframes slideDown {
+  0% {
+    transform: translateY(100%);
+  }
+  10% {
+    transform: translateY(23%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .time , .score {
+    display: block;
+    width: 80%;
+    margin: auto;
+    padding: 13px;
+  }
+  .score {
+    margin-top: 6px;
+  }
+  body {
+    padding: 0;
+  }
+  .container {
+    border-radius: 0;
+    min-height: 100vh;
+  }
+  .quoteGenerating  , textarea , .time , .score{
+    font-size: 14px;
+  }
 }
