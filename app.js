@@ -131,6 +131,8 @@ let mytimer = addTimer(60);
 let myInterval = setInterval(()=>{
     let timer = mytimer()
     formatDataAndShowDOM(timer) ;
+    // style our timer && score element
+    styleTimerAndScoreElement(timer , score , time)
     if(timer == 0) {
         clearInterval(myInterval);
         textArea.removeEventListener('input', handleEventInputUser)
@@ -146,4 +148,11 @@ function formatDataAndShowDOM(timer){
         remainingSecond > 10 ? rehandleEventInputUsermainingSecond : "0" + remainingSecond;
         time.textContent = "Time " + minute + ":" + remainingSecond
     }
+}
+
+function styleTimerAndScoreElement(timer, scoreElement , timerEl) {
+    let degValue = Math.floor(Math.random()* (timer / 360) * 360);
+    scoreElement.style.background = "linear-gradient("+degValue+"deg"+", rgb(248, 137, 15), rgb(105, 63, 144))"
+    timerEl.style.background = "linear-gradient("+degValue+"deg"+", rgb(248, 137, 15), rgb(105, 63, 144))"
+   
 }

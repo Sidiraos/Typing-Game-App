@@ -28,6 +28,11 @@
 </ul>
 <ul>
     <b>V1.7</b>
+    <li>add style animation on timer</li>
+</ul>
+
+<ul>
+    <b>V1.8</b>
     <li>add keydown event when press esc key for restar the game</li>
     <li>bug fixed when ctrl A the text or when we delete by mouse score is handle like when we bakcspace</li>
 </ul>
