@@ -5,6 +5,7 @@ const score = document.querySelector('.score');
 const quoteEl = document.querySelector('.quote');
 const textArea = document.querySelector('#textArea');
 let userTime = 59
+time.textContent = "Time : " + userTime
 let quote;
 
 async function generateRandomQuote(){
@@ -86,9 +87,12 @@ function handleEventInputUser(e){
     }
 
     previousLength = currentLength;
-
+    // if we finished the previous string and is correct we generate new string
+    // #######################################
     if(scoreForQuote == quote.length){
-        continueGame(); 
+        console.log("mytimer" , currentTime + 10)
+        mytimer = addTimer(currentTime + 10)
+        continueGame();
     }
 }
 
@@ -120,6 +124,11 @@ function restartGame (){
     formatDataAndShowDOM(userTime)
     score.textContent = "Score : " + scoreGame
     textArea.addEventListener('input' , verifyLength)
+    document.querySelector('.timeout').classList.remove('visible')
+    // restore defaut style in css before timer style like when we loaded the page
+    // element time and score in HTML
+    styleTimerAndScoreElement(90 , time , "rgb(0, 0, 0)" , "rgb(82, 82, 81)")
+    styleTimerAndScoreElement(90 , score , "rgb(0, 0, 0)", "rgb(82, 82, 81)")
     continueGame();
 }
 // handle timer
@@ -130,23 +139,22 @@ function addTimer(timer){
     }
     return updateTimer;
 }
-
+// add timer 
 let mytimer = addTimer(userTime);
 let myInterval;
-let timer;
+let currentTime;
 function activeTimer(){
          myInterval = setInterval(()=>{
-         timer = mytimer()
-        formatDataAndShowDOM(timer) ;
+         currentTime = mytimer()
+        formatDataAndShowDOM(currentTime) ;
         // style our timer && score element
-        styleTimerAndScoreElement(timer , score , time)
-        if(timer == 0) {
+        styleTimerAndScoreElement(currentTime , time , "rgb(248, 137, 15)" , "rgb(105, 63, 144)")
+        styleTimerAndScoreElement(currentTime , score , "rgb(166, 3, 105)", "rgb(232, 180, 0)")
+        if(currentTime == 0) {
             clearInterval(myInterval);
             textArea.removeEventListener('input', handleEventInputUser)
+            // show time is out pop up timer
             document.querySelector('.timeout').classList.add('visible')
-            setTimeout(()=>{
-                document.querySelector('.timeout').classList.remove('visible')
-            } , 3000)
         }
     } , 1000);
 }
@@ -162,10 +170,9 @@ function formatDataAndShowDOM(timer){
     }
 }
 // add style when timer start
-function styleTimerAndScoreElement(timer, scoreElement , timerEl) {
-    let degValue = Math.floor(Math.random()* (timer / 360) * 360);
-    scoreElement.style.background = "linear-gradient("+degValue+"deg"+", rgb(166, 3, 105), rgb(232, 180, 0))"
-    timerEl.style.background = "linear-gradient("+degValue+"deg"+", rgb(248, 137, 15), rgb(105, 63, 144))"
+function styleTimerAndScoreElement(deg, el , color1 , color2) {
+    let degValue = Math.floor(Math.random()* (deg / 360) * 360);
+    el.style.background = "linear-gradient("+degValue+"deg"+ "," + color1 + ","+color2 + ")";
 }
 // handle button esc when user presses for restart game
 document.addEventListener('keydown' , restartHandler)
@@ -178,7 +185,7 @@ function restartHandler(e){
     } 
 }
 
-
+// start timer when writing text
 textArea.addEventListener('input' , verifyLength)
 function verifyLength (e){
     if (textArea === document.activeElement && textArea.value.length == 1){
