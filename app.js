@@ -33,25 +33,35 @@ let scoreGame = 0;
 let previousLength = textArea.value.length;
 let scoreForQuote = 0;
 
+function playGame(){
+    console.log(quote);
+    console.log(quote.length);
+    textArea.setAttribute('maxlength' , `${quote.length}`);
+    showQuote();
+    if(lock) return;
+    textArea.addEventListener('input' , handleEventInputUser);
+}
+
 function showQuote(){
     for (let i = 0; i < quote.length; i++){
         const span = document.createElement('span');
         span.textContent = quote[i];
         quoteEl.appendChild(span);
     }
+    lock = false;
 }
 // handle score validation and mark quote as the correct
-function addMarkDownAndScore(check , trueColor , wrongColor, parentEl , i) {
+function addMarkDownAndScore(check , trueColor , wrongColor, parentEl , childItem) {
     do {
         if(check){
             scoreGame++;
             scoreForQuote++;
             score.textContent = `Score : ${scoreGame}`;
         }
-        parentEl.children[i].style.background = trueColor;
-        parentEl.children[i].classList.add(trueColor);
-        if(parentEl.children[i].classList.contains(wrongColor)){
-            parentEl.children[i].classList.remove(wrongColor);
+        parentEl.children[childItem].style.background = trueColor;
+        parentEl.children[childItem].classList.add(trueColor);
+        if(parentEl.children[childItem].classList.contains(wrongColor)){
+            parentEl.children[childItem].classList.remove(wrongColor);
         }
         check = false;
     } while (check == true);
@@ -61,6 +71,7 @@ function handleEventInputUser(e){
     let userInput_string = e.target.value;
     let i = userInput_string.length -1;
     let currentLength = e.target.value.length;
+    // verify if user backspace or deleted word
     if (currentLength < previousLength) {
         console.log("item deleted");
         for (let j = quoteEl.children.length - 1; j >= currentLength; j--) {
@@ -75,6 +86,7 @@ function handleEventInputUser(e){
     } else {
         if(userInput_string.length > 0) {
             if(userInput_string.charAt(i) === quote.charAt(i)) {
+                // green if true , red if false
                 addMarkDownAndScore(true , "green" , "red" , quoteEl , i)
             } else {
                 addMarkDownAndScore(false , "red" , "green" , quoteEl , i)
@@ -92,18 +104,12 @@ function handleEventInputUser(e){
     if(scoreForQuote == quote.length){
         console.log("mytimer" , currentTime + 10)
         mytimer = addTimer(currentTime + 10)
+        lock = true;
         continueGame();
     }
 }
-
-function playGame(){
-    console.log(quote);
-    console.log(quote.length);
-    textArea.setAttribute('maxlength' , `${quote.length}`);
-    showQuote();
-    textArea.addEventListener('input' , handleEventInputUser);
-}
-
+// lock variable for handling spaming when quotes is finished and API is fetching to avoid user to spam
+let lock = false;
 function continueGame(){
     // if we not restart the game 
     quoteEl.textContent= "";
@@ -128,7 +134,7 @@ function restartGame (){
     // restore defaut style in css before timer style like when we loaded the page
     // element time and score in HTML
     styleTimerAndScoreElement(90 , time , "rgb(0, 0, 0)" , "rgb(82, 82, 81)")
-    styleTimerAndScoreElement(90 , score , "rgb(0, 0, 0)", "rgb(82, 82, 81)")
+    // styleTimerAndScoreElement(90 , score , "rgb(0, 0, 0)", "rgb(82, 82, 81)")
     continueGame();
 }
 // handle timer
@@ -149,7 +155,7 @@ function activeTimer(){
         formatDataAndShowDOM(currentTime) ;
         // style our timer && score element
         styleTimerAndScoreElement(currentTime , time , "rgb(248, 137, 15)" , "rgb(105, 63, 144)")
-        styleTimerAndScoreElement(currentTime , score , "rgb(166, 3, 105)", "rgb(232, 180, 0)")
+        // styleTimerAndScoreElement(currentTime , score , "rgb(166, 3, 105)", "rgb(232, 180, 0)")
         if(currentTime == 0) {
             clearInterval(myInterval);
             textArea.removeEventListener('input', handleEventInputUser)

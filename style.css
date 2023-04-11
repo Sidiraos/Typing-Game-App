@@ -25,6 +25,10 @@ body {
   margin-top: 40px;
   text-align: start;
   font-size: 20px;
+  min-height: 100px;
+}
+.quoteGenerating > p:nth-child(1):before {
+  content: "➡️";
 }
 textarea {
   margin-top: 60px;
@@ -33,7 +37,13 @@ textarea {
   font-size: 20px;
   border: 2px solid rgb(140 140 140 / 43%);
   text-align: start;
-  background-color: black;
+  background-color: transparent;
+  resize: none;
+  font-family: Roboto , sans-serif;
+  outline: none;
+}
+textarea:focus {
+  border: 1px solid greenyellow;
 }
 .time , .score {
   background : linear-gradient(90deg, rgb(0, 0, 0), rgb(82, 82, 81));
@@ -55,6 +65,9 @@ textarea {
   animation: slideDown 3000ms ease-in-out ;
   display: block;
   transform: translateY(0%)
+}
+.quote span.red {
+  text-decoration: underline;
 }
 @keyframes slideDown {
   0% {
