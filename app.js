@@ -1,4 +1,4 @@
-const APIEndpoint = "http://api.quotable.io/random";
+const APIEndpoint = "https://api.quotable.io/random";
 
 const time = document.querySelector('.time');
 const score = document.querySelector('.score');
